@@ -1,0 +1,19 @@
+#!/bin/bash
+#PBS -q auto_free
+#PBS -j oe
+#PBS -k oed
+#PBS -N PageRank_Serial
+#PBS -l walltime=00:30:00
+#PBS -l select=1:ncpus=1:mem=16gb
+
+# Force execution inside the absolute build directory
+cd /scratch/e1070537/pagerank_project/build
+
+module purge
+module load nvhpc
+module load openmpi/gcc/64/4.1.8
+module load CMake
+
+echo "=== Starting Serial PageRank Baseline ==="
+./pagerank_serial
+echo "=== Serial Run Complete ==="

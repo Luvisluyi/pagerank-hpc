@@ -1,0 +1,26 @@
+#!/bin/bash
+#PBS -q auto_free
+#PBS -j oe
+#PBS -k oed
+#PBS -N PageRank_MPI
+#PBS -l walltime=00:30:00
+#PBS -l select=1:ncpus=36:mem=32gb
+
+cd /scratch/e1070537/pagerank_project/build
+
+module purge
+module load nvhpc
+module load openmpi/gcc/64/4.1.8
+module load CMake
+
+echo "=== Starting Pure MPI Strong Scaling Benchmark ==="
+echo "Serial Baseline Reference (T1): 0.0291556 s"
+echo "--------------------------------------------------"
+
+for np in 1 2 4 8 16 32 36; do
+    echo ">>> Running with np = $np process(es)..."
+    mpirun -np $np ./pagerank_mpi
+    echo "--------------------------------------------------"
+done
+
+echo "=== MPI Benchmark Complete ==="

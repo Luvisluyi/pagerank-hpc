@@ -1,0 +1,6 @@
+build/
+*.o*
+*.e*
+*.out
+.vscode/
+bin/cd /scratch/e1070537/pagerank_project

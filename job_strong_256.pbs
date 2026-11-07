@@ -1,0 +1,26 @@
+#!/bin/bash
+#PBS -q cpu_parallel
+#PBS -j oe
+#PBS -k oed
+#PBS -N PR_Strong_256
+#PBS -l select=8:ncpus=32:mpiprocs=32:mem=32gb
+
+cd /scratch/e1070537/pagerank_project/build
+
+# Load exact environment
+module purge
+module load nvhpc
+module load openmpi/gcc/64/4.1.8
+module load CMake
+
+echo "=== Multi-Node MPI Strong Scaling (N=10M, M=100M) ==="
+echo "Core progression: 1, 2, 4, 8, 16, 32, 64, 128, 256"
+echo "------------------------------------------------------------"
+
+for np in 1 2 4 8 16 32 64 128 256; do
+    echo ">>> Running with np = $np process(es)..."
+    mpirun -np ${np} -f ${PBS_NODEFILE} ./pagerank_mpi 10000000 100000000
+    echo "------------------------------------------------------------"
+done
+
+echo "=== MPI Strong Scaling Benchmark Complete ==="

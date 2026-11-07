@@ -1,0 +1,25 @@
+#!/bin/bash
+#PBS -q cpu_parallel
+#PBS -j oe
+#PBS -k oed
+#PBS -N PR_Weak_256
+#PBS -l select=8:ncpus=32:mpiprocs=32:mem=32gb
+
+cd /scratch/e1070537/pagerank_project/build
+
+module purge
+module load nvhpc
+module load openmpi/gcc/64/4.1.8
+module load CMake
+
+echo "=== Multi-Node MPI Weak Scaling (100k V, 1M E per rank) ==="
+
+for np in 1 2 4 8 16 32 64 128 256; do
+    V=$((np * 100000))
+    E=$((np * 1000000))
+    echo ">>> Running np = $np process(es) [Total Graph: V=$V, E=$E]..."
+    mpirun -np ${np} -f ${PBS_NODEFILE} ./pagerank_mpi $V $E
+    echo "------------------------------------------------------------"
+done
+
+echo "=== MPI Weak Scaling Benchmark Complete ==="
