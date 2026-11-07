@@ -1,9 +1,9 @@
 #!/bin/bash
-#PBS -q cpu_parallel
+#PBS -N PR_Weak_256
 #PBS -j oe
 #PBS -k oed
-#PBS -N PR_Weak_256
-#PBS -l select=8:ncpus=32:mpiprocs=32:mem=32gb
+#PBS -l walltime=01:00:00
+#PBS -l select=8:ncpus=36:mpiprocs=32:mem=250gb
 
 cd /scratch/e1070537/pagerank_project/build
 
